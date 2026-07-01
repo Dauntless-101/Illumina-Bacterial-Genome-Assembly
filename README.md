@@ -66,3 +66,84 @@ flowchart TD
     G --> H
     H --> I[MultiQC]
     I --> J[Snakemake report + provenance]
+
+Tool table
+Step	Tool	Purpose / Output
+1	FastQC	Raw read QC → HTML reports
+2	fastp	Adapter removal, quality trimming, filtering → cleaned FASTQ, JSON report
+3	FastQC	Post‑trimming QC → HTML reports
+4	SPAdes	De novo assembly → draft genome
+5	QUAST	Assembly contiguity & correctness metrics → report
+6	BUSCO	Genome completeness (lineage configurable, default bacteria_odb10) → scores
+7	Bakta	Structural/functional annotation → GFF3, GBK, etc.
+8	MultiQC	Aggregates FastQC, fastp, QUAST, BUSCO → interactive HTML
+9	Snakemake report	Built‑in self‑contained report with DAG, runtimes, embedded outputs
+10	Provenance rule	Collects config, versions, checksums, runtime, invocation
+Tool selection rationale
+Why fastp?
+fastp is a single‑tool replacement for Trimmomatic + FastQC post‑processing. It trims adapters, quality‑filters, and generates a JSON report directly consumable by MultiQC — all while being significantly faster.
+
+Why SPAdes?
+SPAdes is a widely adopted bacterial short‑read assembler. Its integrated BayesHammer module performs error correction directly on the reads, so an additional pre‑assembly correction step is unnecessary. SPAdes handles variable coverage and multiple libraries well, making it a robust choice for most bacterial genomes.
+
+Why no separate polishing step?
+For high‑quality Illumina‑only datasets, SPAdes typically produces assemblies with a consensus accuracy above 99.9% due to the low intrinsic error rate of Illumina reads and the effectiveness of BayesHammer. Consequently, an extra polishing step with tools such as Pilon or Racon is not required for a high‑quality draft genome. Users who need to maximise consensus accuracy (e.g., to distinguish very closely related strains) or who are working with hybrid assemblies may optionally incorporate polishing tools; the pipeline can be extended to include those steps.
+
+Why Bakta?
+Bakta is actively maintained, faster, and more accurate than Prokka. It handles databases transparently and outputs standardised annotation files directly usable in downstream analyses.
+
+Why per‑rule environments?
+Single‑environment workflows often suffer from version conflicts. By giving each tool its own minimal Conda environment, we guarantee that updates or changes to one tool never break another. This is the same approach used by nf‑core pipelines.
+
+Repository structure
+text
+Illumina-Bacterial-Genome-Assembly/
+├── README.md
+├── CITATION.cff
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── CODE_OF_CONDUCT.md
+├── environment.yml                  # Snakemake + Mamba only
+├── Dockerfile
+├── Singularity.def
+├── config/
+│   └── config.yaml
+├── workflow/
+│   ├── Snakefile
+│   ├── rules/
+│   │   ├── qc.smk
+│   │   ├── trimming.smk
+│   │   ├── assembly.smk
+│   │   ├── evaluation.smk
+│   │   ├── annotation.smk
+│   │   └── report.smk
+│   ├── envs/
+│   │   ├── fastqc.yaml
+│   │   ├── fastp.yaml
+│   │   ├── spades.yaml
+│   │   ├── quast.yaml
+│   │   ├── busco.yaml
+│   │   ├── bakta.yaml
+│   │   ├── multiqc.yaml
+│   │   └── samtools.yaml
+│   └── scripts/
+│       ├── write_versions.py
+│       └── assembly_stats.py
+├── docs/
+│   ├── installation.md
+│   ├── workflow.md
+│   ├── tools.md
+│   ├── faq.md
+│   └── troubleshooting.md
+├── example_data/
+├── tests/
+└── .github/
+    └── workflows/
+        └── test.yml
+Requirements
+Snakemake ≥ 8.0
+
+Conda (Miniconda or Miniforge) or Docker or Apptainer
+
+The workflow automatically creates per‑rule environments from the files in workflow/envs/. The root environment.yml contains only Snakemake and Mamba.
+
