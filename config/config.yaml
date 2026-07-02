@@ -2,26 +2,28 @@
 # Illumina-Bacterial-Genome-Assembly Configuration
 # ============================================================
 
-# Sample name (used in output naming)
-sample: ecoli
+# Sample sheet: a TSV file with columns 'sample', 'r1', 'r2'
+# Path relative to the repository root.
+sample_sheet: "example_data/samples.tsv"
 
-# Input reads (paired-end, gzip-compressed)
-reads:
-  r1: "example_data/ecoli_R1.fastq.gz"
-  r2: "example_data/ecoli_R2.fastq.gz"
-
-# Assembly parameters
+# Assembly parameters (per‑sample genome size can be in sample sheet if varied)
 assembly:
-  genome_size: 5m             # estimated genome size (e.g., 5m, 2.8m, 10m)
+  genome_size: 5m             # default genome size (e.g., 5m, 2.8m, 10m)
 
-# BUSCO assessment
+# BUSCO lineage dataset
 busco:
-  lineage: bacteria_odb10     # change to a more specific lineage if desired
+  lineage: bacteria_odb10     # will be auto‑downloaded if missing (see docs)
 
-# Resource limits
+# Bakta database
+# The pipeline expects a pre‑downloaded database at this path.
+# To obtain it, run: bakta_db download --output <path>
+bakta:
+  db_path: "resources/bakta_db"
+
+# Default resources (can be overridden per rule in the Snakefile)
 resources:
-  threads: 16
-  memory: 32G                 # used only as a label; Snakemake manages memory via profiles
+  default_threads: 16
+  memory_mb: 32000            # 32 GB; used as Snakemake resource 'mem_mb'
 
 # Pipeline metadata
 pipeline:
@@ -29,7 +31,7 @@ pipeline:
 
 # Logging
 logging:
-  keep_intermediate: false    # set to true to retain all temporary files
+  keep_intermediate: false    # set to true to retain all intermediate files
 
 benchmarking:
   enabled: true
