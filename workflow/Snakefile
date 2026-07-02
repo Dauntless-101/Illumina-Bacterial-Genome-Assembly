@@ -2,7 +2,7 @@ import csv
 import os
 import sys
 
-configfile: "config/config.yaml"
+configfile: "../config/config.yaml"
 
 # -----------------------------------------------------------------------------
 # Read sample sheet
@@ -20,10 +20,10 @@ with open(config["sample_sheet"], newline="") as f:
 # -----------------------------------------------------------------------------
 # Check Bakta database
 # -----------------------------------------------------------------------------
-if not os.path.isdir(config["bakta"]["db_path"]):
-    print(f"WARNING: Bakta database not found at {config['bakta']['db_path']}", file=sys.stderr)
-    print("Download it with: bakta_db download --output " + config["bakta"]["db_path"], file=sys.stderr)
-    # workflow will fail when bakta runs; just a friendly early warning
+bakta_db = config["bakta"]["db_path"]
+if not os.path.isdir(bakta_db):
+    print(f"WARNING: Bakta database not found at {bakta_db}", file=sys.stderr)
+    print(f"Download it with: bakta_db download --output {bakta_db}", file=sys.stderr)
 
 # -----------------------------------------------------------------------------
 # Include all rule files
@@ -36,7 +36,7 @@ include: "rules/annotation.smk"
 include: "rules/report.smk"
 
 # -----------------------------------------------------------------------------
-# Top‑level targets (Snakemake --report not included; run it manually afterwards)
+# Top‑level targets
 # -----------------------------------------------------------------------------
 rule all:
     input:
