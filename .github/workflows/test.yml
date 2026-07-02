@@ -24,6 +24,13 @@ jobs:
           environment-file: environment.yml
           activate-environment: illumina-assembly
 
+      - name: Create dummy sample sheet for lint
+        run: |
+          # Snakefile reads config["sample_sheet"] at parse time.
+          # Provide a minimal file so --lint can complete.
+          echo -e "sample\tr1\tr2" > my_samples.tsv
+          echo -e "dummy\tdummy_R1.fastq.gz\tdummy_R2.fastq.gz" >> my_samples.tsv
+
       - name: Lint Snakemake workflow
         run: |
           snakemake --lint
