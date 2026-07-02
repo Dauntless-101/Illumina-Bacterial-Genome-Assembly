@@ -2,36 +2,33 @@
 # Illumina-Bacterial-Genome-Assembly Configuration
 # ============================================================
 
-# Sample sheet: a TSV file with columns 'sample', 'r1', 'r2'
-# Path relative to the repository root.
-sample_sheet: "my_samples.tsv"
+# Sample sheet (tab‑separated with columns: sample, r1, r2)
+# Uncomment and set the path when you have a sample sheet ready.
+# sample_sheet: "my_samples.tsv"
 
-# Assembly parameters (per‑sample genome size can be in sample sheet if varied)
+# Assembly parameters
 assembly:
-  genome_size: 5m             # default genome size (e.g., 5m, 2.8m, 10m)
+  genome_size: 5m
 
 # BUSCO lineage dataset
 busco:
-  lineage: bacteria_odb10     # will be auto‑downloaded if missing (see docs)
+  lineage: bacteria_odb10
 
-# Bakta database
-# The pipeline expects a pre‑downloaded database at this path.
-# To obtain it, run: bakta_db download --output <path>
+# Bakta database path (download with: bakta_db download --output <path>)
 bakta:
   db_path: "resources/bakta_db"
 
-# Default resources (can be overridden per rule in the Snakefile)
+# Resources
 resources:
   default_threads: 16
-  memory_mb: 32000            # 32 GB; used as Snakemake resource 'mem_mb'
+  memory_mb: 32000
 
 # Pipeline metadata
 pipeline:
   version: "1.0.0"
 
-# Logging
 logging:
-  keep_intermediate: false    # set to true to retain all intermediate files
+  keep_intermediate: false
 
 benchmarking:
   enabled: true
