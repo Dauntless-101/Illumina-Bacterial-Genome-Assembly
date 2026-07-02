@@ -1,0 +1,21 @@
+Bootstrap: docker
+From: mambaforge:24.7.1-0
+
+%labels
+    Maintainer your-email@example.com
+    Version 1.0.0
+
+%files
+    environment.yml /tmp/environment.yml
+    . /opt/pipeline
+
+%post
+    mamba env create -f /tmp/environment.yml
+    mamba clean -afy
+
+%environment
+    export PATH=/opt/conda/envs/illumina-assembly/bin:$PATH
+
+%runscript
+    cd /opt/pipeline
+    exec snakemake "$@"
