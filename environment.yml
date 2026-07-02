@@ -7,5 +7,3 @@ dependencies:
   - snakemake=8.20.0
   - python=3.11
   - mamba=1.5.9
-  - conda=24.7.1          # pinned conda version for reproducibility
-  - conda-lock=2.5.7      # optional: generate lock files for per‑rule envs
