@@ -27,7 +27,7 @@ jobs:
       - name: Create dummy sample sheet for lint
         run: |
           # Snakefile reads config["sample_sheet"] at parse time.
-          # Provide a minimal file so --lint can complete.
+          # Provide a minimal file so --lint can succeed.
           echo -e "sample\tr1\tr2" > my_samples.tsv
           echo -e "dummy\tdummy_R1.fastq.gz\tdummy_R2.fastq.gz" >> my_samples.tsv
 
