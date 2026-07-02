@@ -3,3 +3,7 @@ channels:
   - bioconda
 dependencies:
   - busco=5.7.1
+  - python=3.11
+  - augustus=3.5.0
+  - hmmer=3.4
+  - blast=2.15
