@@ -1,0 +1,2 @@
+sample	r1	r2
+ecoli	example_data/ecoli_R1.fastq.gz	example_data/ecoli_R2.fastq.gz
