@@ -1,0 +1,24 @@
+### Using Conda (recommended for single machine)
+
+bash
+git clone https://github.com/Dauntless-101/Illumina-Bacterial-Genome-Assembly.git
+cd Illumina-Bacterial-Genome-Assembly
+conda env create -f environment.yml
+conda activate illumina-assembly
+
+###Using Docker
+A pre‑built image may be available from the GitHub Container Registry:
+
+bash
+docker pull ghcr.io/dauntless-101/illumina-bact-assembly:latest
+Alternatively, build locally:
+
+bash
+docker build -t illumina-bact-assembly .
+docker run -v $(pwd):/data illumina-bact-assembly snakemake --cores 8
+
+
+###Using Apptainer (HPC‑friendly)
+bash
+apptainer build illumina-bact-assembly.sif Singularity.def
+apptainer exec --bind $(pwd) illumina-bact-assembly.sif snakemake --cores 16
