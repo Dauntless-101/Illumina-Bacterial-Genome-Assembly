@@ -4,7 +4,7 @@
 
 # Sample sheet: a TSV file with columns 'sample', 'r1', 'r2'
 # Path relative to the repository root.
-sample_sheet: "example_data/samples.tsv"
+sample_sheet: "my_samples.tsv"
 
 # Assembly parameters (per‑sample genome size can be in sample sheet if varied)
 assembly:
