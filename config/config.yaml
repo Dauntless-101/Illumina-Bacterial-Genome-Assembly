@@ -1,23 +1,27 @@
-# Sample name
+# ============================================================
+# Illumina-Bacterial-Genome-Assembly Configuration
+# ============================================================
+
+# Sample name (used in output naming)
 sample: ecoli
 
-# Input reads
+# Input reads (paired-end, gzip-compressed)
 reads:
   r1: "example_data/ecoli_R1.fastq.gz"
   r2: "example_data/ecoli_R2.fastq.gz"
 
-# Assembly
+# Assembly parameters
 assembly:
-  genome_size: 5m
+  genome_size: 5m             # estimated genome size (e.g., 5m, 2.8m, 10m)
 
-# BUSCO lineage (default: bacteria_odb10; use an appropriate lineage for your organism)
+# BUSCO assessment
 busco:
-  lineage: bacteria_odb10
+  lineage: bacteria_odb10     # change to a more specific lineage if desired
 
 # Resource limits
 resources:
   threads: 16
-  memory: 32G
+  memory: 32G                 # used only as a label; Snakemake manages memory via profiles
 
 # Pipeline metadata
 pipeline:
@@ -25,8 +29,7 @@ pipeline:
 
 # Logging
 logging:
-  keep_intermediate: false
+  keep_intermediate: false    # set to true to retain all temporary files
 
 benchmarking:
   enabled: true
-  
