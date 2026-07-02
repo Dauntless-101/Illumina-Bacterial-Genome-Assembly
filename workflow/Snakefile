@@ -5,25 +5,36 @@ import sys
 configfile: "../config/config.yaml"
 
 # -----------------------------------------------------------------------------
-# Read sample sheet
+# Load sample sheet (lazy – only fails when rules actually need samples)
 # -----------------------------------------------------------------------------
-SAMPLES = {}
-with open(config["sample_sheet"], newline="") as f:
-    reader = csv.DictReader(f, delimiter="\t")
-    for row in reader:
-        sample = row["sample"].strip()
-        SAMPLES[sample] = {
-            "r1": row["r1"].strip(),
-            "r2": row["r2"].strip(),
-        }
+def load_samples():
+    """Return a dict of samples from config['sample_sheet'].
+       Returns an empty dict if the config key is missing or the file doesn't exist."""
+    sheet_path = config.get("sample_sheet", None)
+    if not sheet_path or not os.path.exists(sheet_path):
+        # No sample sheet provided or file missing: treat as no samples.
+        return {}
+    samples = {}
+    with open(sheet_path, newline="") as f:
+        reader = csv.DictReader(f, delimiter="\t")
+        for row in reader:
+            sample = row["sample"].strip()
+            samples[sample] = {
+                "r1": row["r1"].strip(),
+                "r2": row["r2"].strip(),
+            }
+    return samples
+
+SAMPLES = load_samples()
 
 # -----------------------------------------------------------------------------
-# Check Bakta database
+# Check Bakta database (only when samples are present – optional)
 # -----------------------------------------------------------------------------
-bakta_db = config["bakta"]["db_path"]
-if not os.path.isdir(bakta_db):
-    print(f"WARNING: Bakta database not found at {bakta_db}", file=sys.stderr)
-    print(f"Download it with: bakta_db download --output {bakta_db}", file=sys.stderr)
+if SAMPLES:
+    bakta_db = config["bakta"]["db_path"]
+    if not os.path.isdir(bakta_db):
+        print(f"WARNING: Bakta database not found at {bakta_db}", file=sys.stderr)
+        print(f"Download it with: bakta_db download --output {bakta_db}", file=sys.stderr)
 
 # -----------------------------------------------------------------------------
 # Include all rule files
@@ -38,14 +49,17 @@ include: "rules/report.smk"
 # -----------------------------------------------------------------------------
 # Top‑level targets
 # -----------------------------------------------------------------------------
-rule all:
-    input:
-        # per‑sample annotation (ensures whole pipeline runs)
-        expand("results/{sample}/07_bakta/annotation.gff3", sample=SAMPLES.keys()),
-        # multi‑sample aggregation
-        "results/multiqc/multiqc_report.html",
-        # provenance
-        "results/provenance/config.yaml",
-        "results/provenance/software_versions.yml",
-        "results/provenance/checksums.tsv",
-        "results/provenance/runtime.tsv",
+if SAMPLES:
+    rule all:
+        input:
+            expand("results/{sample}/07_bakta/annotation.gff3", sample=SAMPLES.keys()),
+            "results/multiqc/multiqc_report.html",
+            "results/provenance/config.yaml",
+            "results/provenance/software_versions.yml",
+            "results/provenance/checksums.tsv",
+            "results/provenance/runtime.tsv",
+else:
+    # No samples – define a dummy rule to avoid Snakemake complaining about missing all rule.
+    rule all:
+        input:
+            []
