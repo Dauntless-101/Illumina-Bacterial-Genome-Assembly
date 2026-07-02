@@ -2,4 +2,6 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - spades=4.1.0
+  - spades=3.15.5
+  - python=3.11           # SPAdes 3.15.5 uses Python heavily
+  - numpy=1.26
