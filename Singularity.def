@@ -7,11 +7,15 @@ From: mambaforge:24.7.1-0
 
 %files
     environment.yml /tmp/environment.yml
-    . /opt/pipeline
+    workflow/ /opt/pipeline/workflow/
+    config/ /opt/pipeline/config/
+    scripts/ /opt/pipeline/scripts/
+    example_data/ /opt/pipeline/example_data/
 
 %post
     mamba env create -f /tmp/environment.yml
     mamba clean -afy
+    rm /tmp/environment.yml
 
 %environment
     export PATH=/opt/conda/envs/illumina-assembly/bin:$PATH
