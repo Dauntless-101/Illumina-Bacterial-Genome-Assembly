@@ -1,20 +1,24 @@
 FROM mambaforge:24.7.1-0
 
 LABEL maintainer="your-email@example.com"
-LABEL description="Docker image for Illumina-Bacterial-Genome-Assembly pipeline"
+LABEL description="Lightweight Snakemake image for Illumina-Bacterial-Genome-Assembly"
 LABEL version="1.0.0"
 
 # Install root environment (Snakemake + Mamba)
 COPY environment.yml /tmp/environment.yml
 RUN mamba env create -f /tmp/environment.yml && \
-    mamba clean -afy
+    mamba clean -afy && \
+    rm /tmp/environment.yml
 
-# Set environment path so Snakemake is found
 ENV PATH /opt/conda/envs/illumina-assembly/bin:$PATH
 
-# Copy the entire workflow so Snakemake can create per‑rule envs from envs/
-COPY . /opt/pipeline
+# Copy only the files needed for execution (not docs, tests, etc.)
+COPY workflow/ /opt/pipeline/workflow/
+COPY config/ /opt/pipeline/config/
+COPY scripts/ /opt/pipeline/scripts/
+COPY example_data/ /opt/pipeline/example_data/
+COPY environment.yml /opt/pipeline/environment.yml
+
 WORKDIR /opt/pipeline
 
-# Default command
 CMD ["snakemake", "--help"]
