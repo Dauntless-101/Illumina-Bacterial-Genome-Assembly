@@ -1,0 +1,32 @@
+# Sample name
+sample: ecoli
+
+# Input reads
+reads:
+  r1: "example_data/ecoli_R1.fastq.gz"
+  r2: "example_data/ecoli_R2.fastq.gz"
+
+# Assembly
+assembly:
+  genome_size: 5m
+
+# BUSCO lineage (default: bacteria_odb10; use an appropriate lineage for your organism)
+busco:
+  lineage: bacteria_odb10
+
+# Resource limits
+resources:
+  threads: 16
+  memory: 32G
+
+# Pipeline metadata
+pipeline:
+  version: "1.0.0"
+
+# Logging
+logging:
+  keep_intermediate: false
+
+benchmarking:
+  enabled: true
+  
