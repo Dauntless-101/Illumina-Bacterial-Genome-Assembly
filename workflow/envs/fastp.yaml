@@ -3,3 +3,5 @@ channels:
   - bioconda
 dependencies:
   - fastp=0.24.0
+  - libdeflate=1.19       # fastp’s underlying compression
+
