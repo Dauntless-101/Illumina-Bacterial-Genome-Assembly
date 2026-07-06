@@ -5,7 +5,7 @@ authors:
     given-names: "Taha"
     orcid: "https://orcid.org/0009-0008-0613-4401"
 title: "Illumina-Bacterial-Genome-Assembly: A reproducible Snakemake workflow for ONT bacterial genome assembly and annotation"
-version: 0.1.0
+version: 1.0
 
 date-released: 2026-07-02
 url: "https://github.com/Dauntless-101/Illumina-Bacterial-Genome-Assembly"
