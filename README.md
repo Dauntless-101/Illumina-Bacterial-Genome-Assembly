@@ -4,7 +4,7 @@
 [![Docker](https://img.shields.io/badge/docker-ready-blue.svg)](https://www.docker.com)
 [![Apptainer](https://img.shields.io/badge/apptainer-ready-blue.svg)](https://apptainer.org)
 [![License](https://img.shields.io/badge/license-MIT-purple.svg)](LICENSE)
-[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.XXXXXX-orange.svg)](https://doi.org/10.5281/zenodo.XXXXXX)
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.21211786-orange.svg)](https://doi.org/10.5281/zenodo.21211786)
 [![CI](https://github.com/Dauntless-101/Illumina-Bacterial-Genome-Assembly/actions/workflows/test.yml/badge.svg)](https://github.com/Dauntless-101/Illumina-Bacterial-Genome-Assembly/actions)
 
 **A reproducible Snakemake workflow for assembling, evaluating, and annotating bacterial genomes from Illumina paired‑end sequencing reads.**
