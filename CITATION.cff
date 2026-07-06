@@ -7,5 +7,5 @@ authors:
 title: "Illumina-Bacterial-Genome-Assembly: A reproducible Snakemake workflow for ONT bacterial genome assembly and annotation"
 version: 0.1.0
 doi: 10.5281/zenodo.XXXXX
-date-released: 2025-01-01
+date-released: 2026-07-02
 url: "https://github.com/Dauntless-101/Illumina-Bacterial-Genome-Assembly"
