@@ -6,6 +6,6 @@ authors:
     orcid: "https://orcid.org/0009-0008-0613-4401"
 title: "Illumina-Bacterial-Genome-Assembly: A reproducible Snakemake workflow for ONT bacterial genome assembly and annotation"
 version: 1.0
-
+DOI: "https://doi.org/10.5281/zenodo.21211786"
 date-released: 2026-07-02
 url: "https://github.com/Dauntless-101/Illumina-Bacterial-Genome-Assembly"
